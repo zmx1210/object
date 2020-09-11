@@ -1,52 +1,49 @@
 <template>
     <div class="slider-bar">
-        <el-radio-group v-model="isCollapse" style="margin-bottom: 20px;">
-            <el-radio-button :label="false">展开</el-radio-button>
-            <el-radio-button :label="true">收起</el-radio-button>
-        </el-radio-group>
-        <el-menu default-active="1-4-1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose" :collapse="isCollapse" background-color="#545c64" text-color="#fff"
-        active-text-color="#ffd04b">
-            <el-submenu index="1">
+        
+        <el-menu
+            default-active="2"
+            class="el-menu-vertical-demo"
+            @open="handleOpen"
+            @close="handleClose"
+            background-color="#545c64"
+            text-color="#fff"
+            active-text-color="#ffd04b">
+            <el-submenu v-for="(firstMenu,key) in menu" :key="key" :index="key+1+''">
                 <template slot="title">
                     <i class="el-icon-location"></i>
-                    <span slot="title">导航一</span>
+                    <span>{{firstMenu.title}}</span>
                 </template>
-                <el-menu-item-group>
-                    <span slot="title">分组一</span>
-                    <el-menu-item index="1-1">选项1</el-menu-item>
-                    <el-menu-item index="1-2">选项2</el-menu-item>
-                </el-menu-item-group>
-                <el-menu-item-group title="分组2">
-                    <el-menu-item index="1-3">选项3</el-menu-item>
-                </el-menu-item-group>
-                <el-submenu index="1-4">
-                    <span slot="title">选项4</span>
-                <el-menu-item index="1-4-1">选项1</el-menu-item>
+                <el-submenu :index="'1-'+key" v-for="(subMenu,key) in firstMenu.subMenu" :key="key">
+                    <template slot="title">{{subMenu.title}}</template>
+                    <router-link :to="thirdMenu.url" :index="'1-1-'+key" v-for="(thirdMenu,key) in subMenu.children" :key="key">{{thirdMenu.title}}</router-link>
                 </el-submenu>
             </el-submenu>
-            <el-menu-item index="2">
-                <i class="el-icon-menu"></i>
-                <span slot="title">导航二</span>
-            </el-menu-item>
-            <el-menu-item index="3" disabled>
-                <i class="el-icon-document"></i>
-                <span slot="title">导航三</span>
-            </el-menu-item>
-            <el-menu-item index="4">
-                <i class="el-icon-setting"></i>
-                <span slot="title">导航四</span>
-            </el-menu-item>
         </el-menu>
     </div>
 </template>
 
 <script>
+import comObject from '@/common/js/dataType/Object'
 
 export default {
   name: 'sliderBar',
    data() {
     return {
-        isCollapse: true
+        isCollapse: true,
+        menu: [{
+            title: 'JS',
+            subMenu: [{
+                title:'数据类型',
+                children: [{
+                    title: 'Object',
+                    url: 'JS/comObject'
+                },{
+                    title: 'Map',
+                    url: comObject
+                }]
+            }]
+        }],
     }
   },
   components: {
@@ -65,8 +62,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 .slider-bar {
-    width: 200px;
+    width: 10%;
     position: absolute;
     left: 0;
+    z-index: 100;
 }
 </style>

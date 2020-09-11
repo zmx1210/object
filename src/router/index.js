@@ -10,6 +10,14 @@ const router = new Router({
         path: '/',
         component: Layout,
         hidden: true,
+        children: [
+            {
+              path: 'JS/comObject',
+              component: () => import('@/common/js/dataType/Object'),
+              name: 'comObject',
+              meta: { title: 'JS', icon: 'dashboard', affix: true }
+            }
+          ]
     }
     ]
 })

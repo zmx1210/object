@@ -42,7 +42,7 @@ export default {
 .nav {
     width: 100%;
     height: 50px;
-    background: rgb(211, 220, 230);
+    background: #545c60;
 
     .nav-left {
         line-height: 50px;
