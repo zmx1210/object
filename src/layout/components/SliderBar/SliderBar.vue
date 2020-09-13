@@ -16,7 +16,7 @@
                 </template>
                 <el-submenu :index="'1-'+key" v-for="(subMenu,key) in firstMenu.subMenu" :key="key">
                     <template slot="title">{{subMenu.title}}</template>
-                    <router-link :to="thirdMenu.url" :index="'1-1-'+key" v-for="(thirdMenu,key) in subMenu.children" :key="key">{{thirdMenu.title}}</router-link>
+                    <router-link :to="{name:thirdMenu.name}" v-for="(thirdMenu,key) in subMenu.children" :key="key"><el-menu-item :index="'1-1-'+key">{{thirdMenu.title}}</el-menu-item></router-link>
                 </el-submenu>
             </el-submenu>
         </el-menu>
@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import comObject from '@/common/js/dataType/Object'
 
 export default {
   name: 'sliderBar',
@@ -37,10 +36,28 @@ export default {
                 title:'数据类型',
                 children: [{
                     title: 'Object',
-                    url: 'JS/comObject'
+                    name: 'comObject'
                 },{
                     title: 'Map',
-                    url: comObject
+                    name: 'comObject'
+                }]
+            }]
+        },{
+            title: 'CSS',
+            subMenu: [{
+                title:'布局',
+                children: [{
+                    title: 'Grid',
+                    name: 'comObject'
+                },{
+                    title: 'Flex',
+                    name: 'comObject'
+                }]
+            },{
+                title:'表格',
+                children: [{
+                    title: 'test',
+                    name: 'table'
                 }]
             }]
         }],
@@ -64,7 +81,24 @@ export default {
 .slider-bar {
     width: 10%;
     position: absolute;
+    top: 50px;
+    bottom: 0;
     left: 0;
     z-index: 100;
+}
+</style>
+<style>
+.el-submenu .el-menu-item {
+    min-width: 0 !important;
+    padding: 0 auto !important;
+    text-align: center !important;
+}
+</style>
+<style>
+li {
+    padding: 0 !important;
+}
+.slider-bar ul {
+    height: 100% !important;
 }
 </style>

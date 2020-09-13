@@ -16,6 +16,10 @@ const router = new Router({
               component: () => import('@/common/js/dataType/Object'),
               name: 'comObject',
               meta: { title: 'JS', icon: 'dashboard', affix: true }
+            },{
+              path: 'CSS/table',
+              component: () => import('@/common/css/table/index'),
+              name: 'table',
             }
           ]
     }

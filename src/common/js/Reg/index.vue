@@ -1,22 +1,15 @@
 <template>
   <div class="main">
-    <div class="header">Object</div>
+    
   </div>
 </template>
 
 <script>
 export default {
-  name: 'comObject',
+  name: 'reg',
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
-.main {
-  padding: 10px;
-
-  .header {
-    font-size: 20px;
-  }
-}
+<style scoped>
 </style>
