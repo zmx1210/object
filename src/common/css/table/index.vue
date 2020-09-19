@@ -315,20 +315,18 @@
       :visible.sync="drawerVisibleCheckPlanForm"
       size="50%"
       @closed="resetForm('checkPlanForm')"
-      class="plan-table"
     >
-      <h3 style="text-align:center;padding-bottom:10px">防雷装置现场检测计划表</h3>
-      <div class="drawer-content">
-        <el-form ref="checkPlanForm" style="border:1px solid #6e6a6a;padding:5px" :model="checkPlan" label-width="100px">
-
+      <div class="drawer-content-table">
+        <h3 style="text-align:center">防雷装置现场检测计划表</h3>
+        <el-form ref="checkPlanForm" :model="checkPlan" label-width="100px">
           <el-row>
             <el-col :span="12">
-              <el-form-item label="计划名称" style="border-bottom:1px solid #6e6a6a;">
-                <el-input v-model="dateToday" />
+              <el-form-item label="计划名称">
+                <el-input v-model="dateToday" :disabled="!isAddCheckPlan" />
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="计划检测日期" prop="planCheckDate" style="border-bottom:1px solid #6e6a6a;">
+              <el-form-item label="检测日期" prop="planCheckDate">
                 <el-date-picker
                   v-model="checkPlan.planCheckDate"
                   type="date"
@@ -340,32 +338,8 @@
               </el-form-item>
             </el-col>
           </el-row>
-
-          <el-form-item label="检测人员">
-            <el-checkbox-group v-model="checkedUsers" @change="changechecker">
-              <el-checkbox
-                v-for="(user, index) in companyCheckUsers"
-                :key="index"
-                :label="user.id"
-              >
-                {{ user.name }}
-              </el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-          <el-form-item label="检测设备" required>
-            <el-checkbox-group v-model="checkedEquipments">
-              <el-checkbox
-                v-for="(equipment, index) in companyCheckEquipments"
-                :key="index"
-                :label="equipment.id"
-              >
-                {{ equipment.name }}
-              </el-checkbox>
-            </el-checkbox-group>
-          </el-form-item>
-
-          <div style="line-height: 30px;border-bottom:1px solid #000">一、防雷技术服务机构信息</div>
-          <el-row style="height:40px;border-bottom:1px solid #000">
+          <div style="padding:11px 0px 11px 0px; border:1px solid #8e8e8e;margin:0 -1px -1px 0;">一、防雷技术服务机构信息</div>
+          <el-row>
             <el-col :span="10">
               <el-form-item label="机构名称">
                 <el-input v-model="companyInfo.name" disabled placeholder="请输入机构名称" />
@@ -388,6 +362,7 @@
                 v-for="(user, index) in companyCheckUsers"
                 :key="index"
                 :label="user.id"
+                :disabled="!isAddCheckPlan"
               >
                 {{ user.name }}
               </el-checkbox>
@@ -399,51 +374,42 @@
                 v-for="(equipment, index) in companyCheckEquipments"
                 :key="index"
                 :label="equipment.id"
+                :disabled="!isAddCheckPlan"
               >
                 {{ equipment.name }}
               </el-checkbox>
             </el-checkbox-group>
           </el-form-item>
-          <el-row>
-            <el-col :span="24">
-              <el-form-item label="检测类别">
-                <el-checkbox
-                  v-for="(checkType, index) in checkTypeOptions"
-                  :key="index"
-                  :label="checkType.id"
-                  :checked="checkType.label === project.checkTypeLabel"
-                  disabled="true"
-                >
-                  {{ checkType.label }}
-                </el-checkbox>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <div>二、防雷技术服务活动信息</div>
-          <el-row style="margin-top:20px">
-            <el-col :span="24">
-              <el-form-item label="检测对象名称" prop="entrustedUnit">
-                <el-input v-model="project.name" disabled />
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="24">
-              <el-form-item label="检测对象地址" prop="entrustedUnit">
-                <el-input v-model="project.address" disabled />
-              </el-form-item>
-            </el-col>
-          </el-row>
+          <el-form-item label="检测类别">
+            <el-checkbox-group v-model="projectCheckType">
+              <el-checkbox
+                v-for="(checkType, index) in checkTypeOptions"
+                :key="index"
+                :label="checkType.value"
+                :disabled="true"
+              >
+                {{ checkType.label }}
+              </el-checkbox>
+            </el-checkbox-group>
+
+          </el-form-item>
+          <div style="padding:11px 0px 11px 0px; border:1px solid #8e8e8e;margin:0 -1px -1px 0;">二、防雷技术服务活动信息</div>
+          <el-form-item label="检测对象名称" prop="entrustedUnit">
+            <el-input v-model="project.name" disabled />
+          </el-form-item>
+          <el-form-item label="检测对象地址" prop="entrustedUnit">
+            <el-input v-model="project.address" disabled />
+          </el-form-item>
           <el-form-item label="检测单体" required>
-            <el-table ref="checkEntityTable" :data="entityList">
+            <el-table ref="checkEntityTable" border="true" :data="entityList" :disabled="!isAddCheckPlan">
               <el-table-column
                 v-if="isAddCheckPlan"
                 type="selection"
                 width="55"
               />
-              <el-table-column label="名称" prop="name" />
+              <el-table-column label="建（构）筑物单体名称" prop="name" />
               <el-table-column label="检测类型" prop="checkTypeLabel" />
-              <el-table-column label="建筑物防雷类别" prop="levelLabel" />
+              <el-table-column label="防雷类别" prop="levelLabel" />
             </el-table>
           </el-form-item>
         </el-form>
@@ -618,7 +584,6 @@
 export default {
   name: 'Index',
   components: {
-
   },
   data() {
     return {
@@ -698,7 +663,7 @@ export default {
 
       companyCheckEquipments: [],
       checkedEquipments: [],
-
+      projectCheckType: [],
       drawerVisibleCheckPlan: false,
       checkPlanList: [],
       isAddCheckPlan: false,
@@ -756,8 +721,9 @@ export default {
       this.planPageSize = pageSize
     },
     handleAdd() {
-      this.isAdd = true
+      // this.isAdd = true
       this.drawerVisibleCheckPlanForm = true
+      this.drawerVisible = true
       this.project = {}
     },
     handleEdit(index, row) {
@@ -799,6 +765,7 @@ export default {
             formData.append('entrustmentPics', item, item.name)
           })
 
+         
         }
       })
     },
@@ -819,6 +786,8 @@ export default {
       formData.append('url', file.url)
       formData.append('type', 'Agreement')
 
+      
+
       this.project.agreementPics.splice(this.project.agreementPics.findIndex(item => item.url === file.url), 1)
     },
     handleRemoveEntrustmentPic(file) {
@@ -832,9 +801,10 @@ export default {
       formData.append('url', file.url)
       formData.append('type', 'Entrustment')
 
+
       this.project.entrustmentPics.splice(this.project.entrustmentPics.findIndex(item => item.url === file.url), 1)
     },
-    handleOpenEntity(index, row) {
+      handleOpenEntity(index, row) {
       this.project = row
       this.drawerVisibleEntity = true
 
@@ -853,7 +823,9 @@ export default {
           })
         }
       })
-
+    },
+    initEntity() {
+      this.entityList = []
     },
     filterHandler(value, row, column) {
       const property = column['property']
@@ -872,7 +844,46 @@ export default {
     changeCheckPlanDate(val) {
       this.checkPlan.planCheckDate = val
     },
-   
+    handleEntitySubmit() {
+      this.$refs.entityForm.validate((valid) => {
+        if (!valid) {
+          return false
+        } else {
+          this.entityFormloading = true
+
+          const formData = new FormData()
+          formData.append('name', this.entity.name)
+          formData.append('projectId', this.project.id)
+          formData.append('checkType', this.entity.checkType)
+          formData.append('level', this.entity.level)
+
+          if (this.isAddEntity) { // 添加单体
+           
+          } else { // 修改单体
+            formData.append('id', this.entity.id)
+          }
+        }
+      })
+    },
+    handleOpenCheckPlan(index, row) {
+      this.isAddCheckPlan = true
+      this.drawerVisibleCheckPlan = true
+      this.project = row
+      this.projectCheckType = []
+      this.projectCheckType.push(row.checkType)
+    },
+    initCheckPlan() {
+    },
+    handleAddCheckPlan() {
+      this.dateToday = this.getdateToday()
+      this.isAddCheckPlan = true
+      this.drawerVisibleCheckPlanForm = true
+      this.checkPlan = {}
+      this.entityList = []
+      this.checkedUsers = []
+      this.checkedEquipments = []
+      this.tableUsers = ''
+    },
     getdateToday() {
       const date = new Date()
       const yyyy = date.getFullYear()
@@ -993,7 +1004,7 @@ export default {
     height: 60px;
     margin: 5px;
   }
-  .drawer-content{
+  .drawer-content, .drawer-content-table {
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -1002,7 +1013,8 @@ export default {
     .el-form{
       flex: 1;
       height: 0;
-      overflow: auto;
+      // overflow: hidden;
+      // border-right: 1px solid #000;
       .map-div{
         margin-top: 10px;
         height: 400px;
@@ -1018,9 +1030,25 @@ export default {
       width: 100%;
     }
   }
-</style>
-<style>
-.plan-table .el-input .el-input__inner{
-  background-color: none !important;
-}
+  .drawer-content-table {
+      .el-form-item {
+        margin-bottom: 0px;
+        border:1px solid #8e8e8e;
+        margin:0 -1px -1px 0;
+      }
+      .el-input{
+          border-left: 1px solid #8e8e8e;
+          border-right: 1px solid #8e8e8e;
+          /deep/.el-input__inner{
+          border:0px !important;
+        }
+      }
+      .el-checkbox-group{
+          padding-left: 10px;
+          border-left: 1px solid #8e8e8e;
+      }
+      .el-table td{
+        border:1px solid #8e8e8e;
+      }
+  }
 </style>

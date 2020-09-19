@@ -9,14 +9,14 @@
             background-color="#545c64"
             text-color="#fff"
             active-text-color="#ffd04b">
-            <el-submenu v-for="(firstMenu,key) in menu" :key="key" :index="key+1+''">
+            <el-submenu v-for="(firstMenu,key1) in menu" :key="key1" :index="key1+1+''">
                 <template slot="title">
                     <i class="el-icon-location"></i>
                     <span>{{firstMenu.title}}</span>
                 </template>
-                <el-submenu :index="'1-'+key" v-for="(subMenu,key) in firstMenu.subMenu" :key="key">
+                <el-submenu :index="key1+1+'-'+key2" v-for="(subMenu,key2) in firstMenu.subMenu" :key="key2">
                     <template slot="title">{{subMenu.title}}</template>
-                    <router-link :to="{name:thirdMenu.name}" v-for="(thirdMenu,key) in subMenu.children" :key="key"><el-menu-item :index="'1-1-'+key">{{thirdMenu.title}}</el-menu-item></router-link>
+                    <router-link :to="{name:thirdMenu.name}" v-for="(thirdMenu,key) in subMenu.children" :key="key"><el-menu-item :index="key1+1+'-'+key2+'-'+key">{{thirdMenu.title}}</el-menu-item></router-link>
                 </el-submenu>
             </el-submenu>
         </el-menu>
@@ -24,43 +24,13 @@
 </template>
 
 <script>
-
+import MenuMap from './SliderMenu'
 export default {
   name: 'sliderBar',
    data() {
     return {
         isCollapse: true,
-        menu: [{
-            title: 'JS',
-            subMenu: [{
-                title:'数据类型',
-                children: [{
-                    title: 'Object',
-                    name: 'comObject'
-                },{
-                    title: 'Map',
-                    name: 'comObject'
-                }]
-            }]
-        },{
-            title: 'CSS',
-            subMenu: [{
-                title:'布局',
-                children: [{
-                    title: 'Grid',
-                    name: 'comObject'
-                },{
-                    title: 'Flex',
-                    name: 'comObject'
-                }]
-            },{
-                title:'表格',
-                children: [{
-                    title: 'test',
-                    name: 'table'
-                }]
-            }]
-        }],
+        menu: MenuMap,
     }
   },
   components: {

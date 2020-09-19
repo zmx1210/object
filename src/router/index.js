@@ -17,6 +17,11 @@ const router = new Router({
               name: 'comObject',
               meta: { title: 'JS', icon: 'dashboard', affix: true }
             },{
+              path: 'JS/comMap',
+              component: () => import('@/common/js/dataType/Map'),
+              name: 'comMap',
+              meta: { title: 'JS', icon: 'dashboard', affix: true }
+            },{
               path: 'CSS/table',
               component: () => import('@/common/css/table/index'),
               name: 'table',
