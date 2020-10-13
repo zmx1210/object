@@ -25,6 +25,10 @@ const router = new Router({
               path: 'CSS/table',
               component: () => import('@/common/css/table/index'),
               name: 'table',
+            },{
+              path: 'CSS/layout/grid',
+              component: () => import('@/common/css/layout/grid/index'),
+              name: 'grid',
             }
           ]
     }

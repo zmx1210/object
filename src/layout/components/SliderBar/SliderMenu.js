@@ -16,7 +16,7 @@ const MenuMap = [{
         title:'布局',
         children: [{
             title: 'Grid',
-            name: 'comObject'
+            name: 'grid'
         },{
             title: 'Flex',
             name: 'comObject'
